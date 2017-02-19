@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.*/
 
-package com.demo.android.smsapp;
+package com.demo.android.smsapp.receivers;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -25,6 +25,7 @@ import android.support.v4.app.NotificationCompat;
 import android.telephony.SmsMessage;
 import android.util.Log;
 
+import com.demo.android.smsapp.R;
 import com.demo.android.smsapp.activities.SMSChatActivity;
 
 public class SMSReceiver extends BroadcastReceiver {
@@ -44,11 +45,10 @@ public class SMSReceiver extends BroadcastReceiver {
                     SmsMessage currentMessage = SmsMessage.createFromPdu((byte[]) pdusObj[i]);
                     String phoneNumber = currentMessage.getDisplayOriginatingAddress();
 
-                    String senderNum = phoneNumber;
                     String message = currentMessage.getDisplayMessageBody();
 
                     Intent chatActivityIntent = new Intent(context, SMSChatActivity.class);
-                    chatActivityIntent.putExtra("number",senderNum);
+                    chatActivityIntent.putExtra("number",phoneNumber);
                     PendingIntent pi = PendingIntent.getActivity(context,1,chatActivityIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
                     NotificationCompat.Builder mBuilder =
@@ -61,7 +61,7 @@ public class SMSReceiver extends BroadcastReceiver {
 
                     notificationManager.notify(99,mBuilder.build());
 
-                    Log.i("SmsReceiver", "senderNum: "+ senderNum + "; message: " + message);
+                    Log.i("SmsReceiver", "senderNum: "+ phoneNumber + "; message: " + message);
 
                 }
             }

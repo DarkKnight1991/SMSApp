@@ -14,11 +14,18 @@ limitations under the License.*/
 
 package com.demo.android.smsapp.activities;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,6 +33,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.telephony.SmsManager;
+import android.telephony.SmsMessage;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -77,6 +85,18 @@ public class SMSChatActivity extends AppCompatActivity implements View.OnClickLi
 
         smsChatsAdapter = new SMSChatsAdapter(this,smsModels);
         recyclerView.setAdapter(smsChatsAdapter);
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        registerReceiver(localSMSReceiver,new IntentFilter("android.provider.Telephony.SMS_RECEIVED"));
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        unregisterReceiver(localSMSReceiver);
     }
 
     @Override
@@ -171,7 +191,56 @@ public class SMSChatActivity extends AppCompatActivity implements View.OnClickLi
         int id = v.getId();
         if(id == R.id.btn_send){
             smsManager.sendTextMessage(number,null,etMsg.getText().toString(),null,null);
+            smsModels.add(SMSModel.getSMSModelObject("45",number,etMsg.getText().toString(),"2",String.valueOf(System.currentTimeMillis())));
+            smsChatsAdapter.notifyDataSetChanged();
+            recyclerView.post(new Runnable() {
+                @Override
+                public void run() {
+                    recyclerView.smoothScrollToPosition(recyclerView.getBottom());
+                }
+            });
             etMsg.setText("");
         }
     }
+
+    private BroadcastReceiver localSMSReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final Bundle bundle = intent.getExtras();
+
+            try {
+
+                if (bundle != null) {
+                    NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+                    final Object[] pdusObj = (Object[]) bundle.get("pdus");
+
+                    for (int i = 0; i < pdusObj.length; i++) {
+
+                        SmsMessage currentMessage = SmsMessage.createFromPdu((byte[]) pdusObj[i]);
+                        String phoneNumber = currentMessage.getDisplayOriginatingAddress();
+
+                        String message = currentMessage.getDisplayMessageBody();
+
+                        Log.i("SmsReceiver", "senderNum: "+ phoneNumber + "; message: " + message);
+                        //passing dummy id here since real id is stored in content provider
+                        smsModels.add(SMSModel.getSMSModelObject("45",phoneNumber,message,"1",String.valueOf(System.currentTimeMillis())));
+                        smsChatsAdapter.notifyDataSetChanged();
+
+                        recyclerView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                recyclerView.smoothScrollToPosition(recyclerView.getBottom());
+                            }
+                        });
+
+                    }
+                }
+
+            } catch (Exception e) {
+                Log.e("SmsReceiver", "Exception smsReceiver" +e);
+
+            }
+        }
+    };
 }
