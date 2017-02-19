@@ -105,18 +105,6 @@ public class SMSChatActivity extends AppCompatActivity implements View.OnClickLi
         getMenuInflater().inflate(R.menu.menu_chat, menu);
 
         MenuItem item = menu.findItem(R.id.action_search);
-        //region AutoCompleteTextView
-        /*autoCompleteTextView = (AutoCompleteTextView)item.getActionView();
-        autoCompleteTextView.setWidth(ProjectUtil.dpToPx(200,this));
-        autoCompleteTextView.setMaxLines(1);
-        autoCompleteTextView.setHint(getResources().getString(R.string.hint_dashboard_search));
-        suggestions = new ArrayList<>(Arrays.asList(AppConstants.DASHBOARD_SEARCH_SUGGESTIONS));
-        listAdapter = new ArrayAdapter<String>(this,R.layout.layout_autocomplete_item_dropdown,R.id.text_name,AppConstants.DASHBOARD_SEARCH_SUGGESTIONS);
-        listAdapter.notifyDataSetChanged();
-        autoCompleteTextView.setAdapter(listAdapter);
-        autoCompleteTextView.setThreshold(1);
-        autoCompleteTextView.setOnItemClickListener(this);*/
-        //endregion
 
         SearchView searchView = (SearchView) item.getActionView();
         searchView.setQueryHint(getResources().getString(R.string.hint_search));
