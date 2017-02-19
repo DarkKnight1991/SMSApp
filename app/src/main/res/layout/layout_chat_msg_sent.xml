@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_sent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_chat_msg_sent"
+    android:padding="@dimen/layout_chat_msg_padding"
+    android:layout_alignParentStart="true">
+
+    <TextView
+        android:id="@+id/tv_who"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_small"
+        android:text="Me:"
+        android:textStyle="italic"/>
+
+    <TextView
+        android:id="@+id/tv_chat_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_medium"
+        android:layout_below="@id/tv_who"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_small"
+        android:text="2/1/17 12:00 PM"
+        android:layout_below="@id/tv_chat_msg"
+         />
+
+    <TextView
+        android:id="@+id/tv_msg_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
+</RelativeLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="chat_msg_sent">#B0F944</color>
+    <color name="chat_msg_sent_dark">#9DDD3E</color>
+    <color name="chat_msg_received">#79FBE6</color>
+    <color name="chat_msg_received_dark">#6CDDCB</color>
+    <color name="black">#000000</color>
+    <color name="dark_grey_translucent">#884C4C4C</color>
+    <color name="shadow">#885D5F5C</color>
+    <color name="white">#FFFFFF</color>
+</resources>
