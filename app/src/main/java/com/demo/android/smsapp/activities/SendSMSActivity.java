@@ -34,6 +34,7 @@ public class SendSMSActivity extends ParentActivity implements View.OnClickListe
         btnSend.setOnClickListener(this);
 
         smsManager = SmsManager.getDefault();
+        
     }
 
     @Override
